@@ -4,9 +4,9 @@ namespace ToKanjiLib;
 
 public static class Converter
 {
-    private const string Chars1 = "一二三四五六七八九";
-    private const string Chars2 = "十百千";
-    private const string Chars3 = "万億兆";
+    private const string Chars1 = "〇一二三四五六七八九";
+    private const string Chars2 = "一十百千";
+    private const string Chars3 = "一万億兆";
 
     public static int ToKanji(
         long number,
@@ -66,20 +66,20 @@ public static class Converter
 
             if (div != 0)
             {
-                if (div > 1 || ju == 0 || man > 0)
+                if (div > 1 || ju == 0 || man != 0)
                 {
-                    destination[length++] = Chars1[(int)div - 1];
+                    destination[length++] = Chars1[(int)div];
                 }
 
-                if (ju > 0)
+                if (ju != 0)
                 {
-                    destination[length++] = Chars2[ju - 1];
+                    destination[length++] = Chars2[ju];
                 }
             }
 
-            if (man > 0 && ju == 0)
+            if (man != 0 && ju == 0)
             {
-                destination[length++] = Chars3[man - 1];
+                destination[length++] = Chars3[man];
             }
 
             --ju;
