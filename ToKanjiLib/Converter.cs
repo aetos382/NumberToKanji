@@ -23,15 +23,36 @@ public static class Converter
 
         var length = 0;
 
-        var keta = 1000_0000_0000_0000;
+        var leadingZeros = long.LeadingZeroCount(number);
 
-        var ju = 3;
-        var man = 3;
+        var digits = leadingZeros switch
+        {
+            <= 14 => 16,
+            <= 17 => 15,
+            <= 20 => 14,
+            <= 24 => 13,
+            <= 27 => 12,
+            <= 30 => 11,
+            <= 34 => 10,
+            <= 37 => 9,
+            <= 40 => 8,
+            <= 44 => 7,
+            <= 47 => 6,
+            <= 50 => 5,
+            <= 54 => 4,
+            <= 57 => 3,
+            <= 60 => 2,
+            _ => 1
+        };
+
+        var weight = (long)Math.Pow(10, digits - 1);
+
+        var (man, ju) = Math.DivRem(digits - 1, 4);
         var hasMan = false;
 
-        while (keta != 0)
+        while (weight != 0)
         {
-            var (div, rem) = Math.DivRem(number, keta);
+            var (div, rem) = Math.DivRem(number, weight);
             if (div == 0)
             {
                 goto NEXT;
@@ -57,7 +78,7 @@ public static class Converter
             }
 
             number = rem;
-            keta /= 10;
+            weight /= 10;
             --ju;
 
             if (ju < 0)
