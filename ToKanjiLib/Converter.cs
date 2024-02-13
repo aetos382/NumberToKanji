@@ -43,13 +43,33 @@ public static class Converter
             _ => 0
         };
 
-        var weight = (long)Math.Pow(10, numberOfDigitsMinus1);
+#pragma warning disable IDE0055
+        Span<long> powersOf10 =
+        [
+                              1,
+                             10,
+                            100,
+                           1000,
+                         1_0000,
+                        10_0000,
+                       100_0000,
+                      1000_0000,
+                    1_0000_0000,
+                   10_0000_0000,
+                  100_0000_0000,
+                 1000_0000_0000,
+               1_0000_0000_0000,
+              10_0000_0000_0000,
+             100_0000_0000_0000,
+            1000_0000_0000_0000,
+        ];
+#pragma warning restore IDE0055
 
         var (man, ju) = Math.DivRem(numberOfDigitsMinus1, 4);
 
-        while (weight != 0)
+        for (int i = numberOfDigitsMinus1; i >= 0; --i)
         {
-            var (div, rem) = Math.DivRem(number, weight);
+            var (div, rem) = Math.DivRem(number, powersOf10[i]);
             if (div == 0)
             {
                 goto NEXT;
@@ -73,7 +93,6 @@ public static class Converter
             }
 
             number = rem;
-            weight /= 10;
             --ju;
 
             if (ju < 0)
