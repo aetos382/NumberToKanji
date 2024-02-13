@@ -23,10 +23,8 @@ public sealed class ConverterTest
         long input,
         string expectedOutput)
     {
-        Span<char> buffer = stackalloc char[50];
+        var actual = Converter.ToKanji(input);
 
-        var filledChars = Converter.ToKanji(input, buffer);
-
-        buffer[..filledChars].ToString().Should().Be(expectedOutput);
+        actual.Should().Be(expectedOutput);
     }
 }

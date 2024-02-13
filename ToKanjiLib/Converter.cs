@@ -96,4 +96,13 @@ public static class Converter
 
         return length;
     }
+
+    public static string ToKanji(long number)
+    {
+        Span<char> buffer = stackalloc char[50];
+
+        var filledChars = ToKanji(number, buffer);
+
+        return buffer[..filledChars].ToString();
+    }
 }
