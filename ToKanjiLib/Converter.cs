@@ -67,7 +67,7 @@ public static class Converter
 
         var (man, ju) = Math.DivRem(numberOfDigitsMinus1, 4);
 
-        for (int i = numberOfDigitsMinus1; i >= 0; --i)
+        for (var i = numberOfDigitsMinus1; i >= 0; --i)
         {
             var (div, rem) = Math.DivRem(number, powersOf10[i]);
             if (div == 0)
