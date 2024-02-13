@@ -63,22 +63,19 @@ public static class Converter
         for (var i = count; i >= 0; --i)
         {
             (var div, number) = Math.DivRem(number, powersOf10[i]);
-            if (div == 0)
-            {
-                goto NEXT;
-            }
 
-            if (div > 1 || ju == 0 || man > 0)
+            if (div != 0)
             {
-                destination[length++] = Chars1[(int)div - 1];
-            }
+                if (div > 1 || ju == 0 || man > 0)
+                {
+                    destination[length++] = Chars1[(int)div - 1];
+                }
 
-            if (ju > 0)
-            {
-                destination[length++] = Chars2[ju - 1];
+                if (ju > 0)
+                {
+                    destination[length++] = Chars2[ju - 1];
+                }
             }
-
-        NEXT:
 
             if (man > 0 && ju == 0)
             {
