@@ -23,29 +23,29 @@ public static class Converter
 
         var length = 0;
 
-        var numberOfDigits = long.LeadingZeroCount(number) switch
+        var numberOfDigitsMinus1 = long.LeadingZeroCount(number) switch
         {
-            <= 14 => 16,
-            <= 17 => 15,
-            <= 20 => 14,
-            <= 24 => 13,
-            <= 27 => 12,
-            <= 30 => 11,
-            <= 34 => 10,
-            <= 37 => 9,
-            <= 40 => 8,
-            <= 44 => 7,
-            <= 47 => 6,
-            <= 50 => 5,
-            <= 54 => 4,
-            <= 57 => 3,
-            <= 60 => 2,
-            _ => 1
+            <= 14 => 15,
+            <= 17 => 14,
+            <= 20 => 13,
+            <= 24 => 12,
+            <= 27 => 11,
+            <= 30 => 10,
+            <= 34 => 9,
+            <= 37 => 8,
+            <= 40 => 7,
+            <= 44 => 6,
+            <= 47 => 5,
+            <= 50 => 4,
+            <= 54 => 3,
+            <= 57 => 2,
+            <= 60 => 1,
+            _ => 0
         };
 
-        var weight = (long)Math.Pow(10, numberOfDigits - 1);
+        var weight = (long)Math.Pow(10, numberOfDigitsMinus1);
 
-        var (man, ju) = Math.DivRem(numberOfDigits - 1, 4);
+        var (man, ju) = Math.DivRem(numberOfDigitsMinus1, 4);
 
         while (weight != 0)
         {
