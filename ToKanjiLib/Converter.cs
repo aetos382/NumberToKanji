@@ -44,7 +44,7 @@ public static class Converter
         };
 
 #pragma warning disable IDE0055
-        Span<long> powersOf10 =
+        ReadOnlySpan<long> powersOf10 =
         [
                               1,
                              10,
@@ -69,7 +69,7 @@ public static class Converter
 
         for (var i = numberOfDigitsMinus1; i >= 0; --i)
         {
-            var (div, rem) = Math.DivRem(number, powersOf10[i]);
+            (var div, number) = Math.DivRem(number, powersOf10[i]);
             if (div == 0)
             {
                 goto NEXT;
@@ -92,7 +92,6 @@ public static class Converter
                 destination[length++] = Chars3[man - 1];
             }
 
-            number = rem;
             --ju;
 
             if (ju < 0)
