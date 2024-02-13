@@ -23,31 +23,11 @@ public static class Converter
 
         var length = 0;
 
-        var leadingZeros = long.LeadingZeroCount(number);
+        var numberOfDigits = (int)Math.Log10(number);
 
-        var digits = leadingZeros switch
-        {
-            <= 14 => 16,
-            <= 17 => 15,
-            <= 20 => 14,
-            <= 24 => 13,
-            <= 27 => 12,
-            <= 30 => 11,
-            <= 34 => 10,
-            <= 37 => 9,
-            <= 40 => 8,
-            <= 44 => 7,
-            <= 47 => 6,
-            <= 50 => 5,
-            <= 54 => 4,
-            <= 57 => 3,
-            <= 60 => 2,
-            _ => 1
-        };
+        var weight = (long)Math.Pow(10, numberOfDigits);
+        var (man, ju) = Math.DivRem(numberOfDigits, 4);
 
-        var weight = (long)Math.Pow(10, digits - 1);
-
-        var (man, ju) = Math.DivRem(digits - 1, 4);
         var hasMan = false;
 
         while (weight != 0)
