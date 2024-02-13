@@ -23,12 +23,29 @@ public static class Converter
 
         var length = 0;
 
-        var numberOfDigits = (int)Math.Log10(number);
+        var numberOfDigits = long.LeadingZeroCount(number) switch
+        {
+            <= 14 => 16,
+            <= 17 => 15,
+            <= 20 => 14,
+            <= 24 => 13,
+            <= 27 => 12,
+            <= 30 => 11,
+            <= 34 => 10,
+            <= 37 => 9,
+            <= 40 => 8,
+            <= 44 => 7,
+            <= 47 => 6,
+            <= 50 => 5,
+            <= 54 => 4,
+            <= 57 => 3,
+            <= 60 => 2,
+            _ => 1
+        };
 
-        var weight = (long)Math.Pow(10, numberOfDigits);
-        var (man, ju) = Math.DivRem(numberOfDigits, 4);
+        var weight = (long)Math.Pow(10, numberOfDigits - 1);
 
-        var hasMan = false;
+        var (man, ju) = Math.DivRem(numberOfDigits - 1, 4);
 
         while (weight != 0)
         {
@@ -37,8 +54,6 @@ public static class Converter
             {
                 goto NEXT;
             }
-
-            hasMan = true;
 
             if (div > 1 || ju == 0 || man > 0)
             {
@@ -52,7 +67,7 @@ public static class Converter
 
         NEXT:
 
-            if (hasMan && man > 0 && ju == 0)
+            if (man > 0 && ju == 0)
             {
                 destination[length++] = Chars3[man - 1];
             }
@@ -65,7 +80,6 @@ public static class Converter
             {
                 ju = 3;
                 --man;
-                hasMan = false;
             }
         }
 
