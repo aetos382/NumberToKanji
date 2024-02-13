@@ -21,29 +21,17 @@ public static class Converter
             return 1;
         }
 
-        var length = 0;
-
-        var numberOfDigitsMinus1 = long.LeadingZeroCount(number) switch
-        {
-            <= 14 => 15,
-            <= 17 => 14,
-            <= 20 => 13,
-            <= 24 => 12,
-            <= 27 => 11,
-            <= 30 => 10,
-            <= 34 => 9,
-            <= 37 => 8,
-            <= 40 => 7,
-            <= 44 => 6,
-            <= 47 => 5,
-            <= 50 => 4,
-            <= 54 => 3,
-            <= 57 => 2,
-            <= 60 => 1,
-            _ => 0
-        };
-
 #pragma warning disable IDE0055
+
+        ReadOnlySpan<byte> indexTable =
+        [
+            15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 14,
+            14, 14, 13, 13, 13, 12, 12, 12, 12, 11, 11, 11, 10, 10, 10,  9,
+             9,  9,  9,  8,  8,  8,  7,  7,  7,  6,  6,  6,  6,  5,  5,  5,
+             4,  4,  4,  3,  3,  3,  3,  2,  2,  2,  1,  1,  1,  0,  0,  0,
+             0
+        ];
+
         ReadOnlySpan<long> powersOf10 =
         [
                               1,
@@ -63,11 +51,16 @@ public static class Converter
              100_0000_0000_0000,
             1000_0000_0000_0000
         ];
+
 #pragma warning restore IDE0055
 
-        var (man, ju) = Math.DivRem(numberOfDigitsMinus1, 4);
+        var count = (int)indexTable[unchecked((int)long.LeadingZeroCount(number))];
 
-        for (var i = numberOfDigitsMinus1; i >= 0; --i)
+        var (man, ju) = Math.DivRem(count, 4);
+
+        var length = 0;
+
+        for (var i = count; i >= 0; --i)
         {
             (var div, number) = Math.DivRem(number, powersOf10[i]);
             if (div == 0)
