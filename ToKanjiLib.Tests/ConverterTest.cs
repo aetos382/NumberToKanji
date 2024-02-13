@@ -1,0 +1,32 @@
+﻿using System;
+
+using Xunit;
+
+using FluentAssertions;
+
+namespace ToKanjiLib.Tests;
+
+public sealed class ConverterTest
+{
+    [Theory]
+    [InlineData(0, "〇")]
+    [InlineData(1, "一")]
+    [InlineData(10, "十")]
+    [InlineData(11, "十一")]
+    [InlineData(30, "三十")]
+    [InlineData(207, "二百七")]
+    [InlineData(1_4010, "一万四千十")]
+    [InlineData(307_9005, "三百七万九千五")]
+    [InlineData(1000_0000, "一千万")]
+    [InlineData(9999_9999_9999_9999, "九千九百九十九兆九千九百九十九億九千九百九十九万九千九百九十九")]
+    public void ToKanjiTest(
+        long input,
+        string expectedOutput)
+    {
+        Span<char> buffer = stackalloc char[50];
+
+        var filledChars = Converter.ToKanji(input, buffer);
+
+        buffer[..filledChars].ToString().Should().Be(expectedOutput);
+    }
+}
