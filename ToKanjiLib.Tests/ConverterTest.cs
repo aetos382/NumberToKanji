@@ -18,6 +18,8 @@ public sealed class ConverterTest
     [InlineData(1_4010, "一万四千十")]
     [InlineData(307_9005, "三百七万九千五")]
     [InlineData(1000_0000, "一千万")]
+    [InlineData(1_0000_0000, "一億")]
+    [InlineData(1000_0000_0000, "一千億")]
 
     [InlineData(9, "九")]
     [InlineData(99, "九十九")]

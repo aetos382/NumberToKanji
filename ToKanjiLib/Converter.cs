@@ -68,6 +68,7 @@ public static class Converter
         var (man, ju) = Math.DivRem(count, 4);
 
         var length = 0;
+        var addMan = false;
 
         for (var i = count; i >= 0; --i)
         {
@@ -78,17 +79,20 @@ public static class Converter
                 if (div > 1 || ju == 0 || man != 0)
                 {
                     destination[length++] = Chars1[(int)div];
+                    addMan = true;
                 }
 
                 if (ju != 0)
                 {
                     destination[length++] = Chars2[ju];
+                    addMan = true;
                 }
             }
 
-            if (man != 0 && ju == 0)
+            if (man != 0 && ju == 0 && addMan)
             {
                 destination[length++] = Chars3[man];
+                addMan = false;
             }
 
             --ju;
