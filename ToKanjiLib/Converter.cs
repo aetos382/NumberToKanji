@@ -76,13 +76,13 @@ public static class Converter
 
             if (div != 0)
             {
-                if (div > 1 || ju == 0 || man != 0)
+                if (div > 1 || ju == 0 || man > 0)
                 {
                     destination[length++] = Chars1[(int)div];
                     addMan = true;
                 }
 
-                if (ju != 0)
+                if (ju > 0)
                 {
                     destination[length++] = Chars2[ju];
                     addMan = true;
@@ -91,11 +91,13 @@ public static class Converter
 
             number = rem;
 
-            --ju;
-
-            if (ju < 0)
+            if (ju > 0)
             {
-                if (man != 0 && addMan)
+                --ju;
+            }
+            else
+            {
+                if (man > 0 && addMan)
                 {
                     destination[length++] = Chars3[man];
                     addMan = false;
