@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.Numerics;
 
 namespace ToKanjiLib;
 
@@ -56,7 +57,7 @@ public static class Converter
 
 #pragma warning restore IDE0055
 
-        var count = (int)table[unchecked((int)long.Log2(number))];
+        var count = (int)table[BitOperations.Log2(unchecked((ulong)number))];
 
         if (number < powersOf10[count])
         {
@@ -79,13 +80,13 @@ public static class Converter
                 if (div > 1 || ju == 0 || man > 0)
                 {
                     destination[length++] = Chars1[(int)div];
-                    addMan = true;
+                    addMan = number >= 10000;
                 }
 
                 if (ju > 0)
                 {
                     destination[length++] = Chars2[ju];
-                    addMan = true;
+                    addMan |= number >= 10000;
                 }
             }
 
