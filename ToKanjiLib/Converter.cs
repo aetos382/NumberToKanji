@@ -89,16 +89,21 @@ public static class Converter
                 }
             }
 
-            if (man != 0 && ju == 0 && addMan)
-            {
-                destination[length++] = Chars3[man];
-                addMan = false;
-            }
-
             --ju;
 
             if (ju < 0)
             {
+                if (man != 0 && addMan)
+                {
+                    destination[length++] = Chars3[man];
+                    addMan = false;
+                }
+
+                if (number == 0 && !addMan)
+                {
+                    break;
+                }
+
                 ju = 3;
                 --man;
             }
