@@ -43,6 +43,6 @@ jobs:
         if: always()
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          results-path: 'Test/**/TestResults/**/*.trx'
-          coverage-path: 'Test/**/TestResults/**/coverage.cobertura.xml'
+          results-path: '**/TestResults/**/*.trx'
+          coverage-path: '**/TestResults/**/coverage.cobertura.xml'
           coverage-type: cobertura
