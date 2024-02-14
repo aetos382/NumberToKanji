@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Globalization;
 
 namespace ToKanjiLib;
 
@@ -23,38 +25,45 @@ public static class Converter
 
 #pragma warning disable IDE0055
 
-        ReadOnlySpan<byte> indexTable =
+        ReadOnlySpan<byte> table =
         [
-            15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 14,
-            14, 14, 13, 13, 13, 12, 12, 12, 12, 11, 11, 11, 10, 10, 10,  9,
-             9,  9,  9,  8,  8,  8,  7,  7,  7,  6,  6,  6,  6,  5,  5,  5,
-             4,  4,  4,  3,  3,  3,  3,  2,  2,  2,  1,  1,  1,  0,  0,  0,
-             0
+             0,  0,  0,  1,  1,  1,  2,  2,  2,  3,  3,  3,  3,  4,  4,  4,
+             5,  5,  5,  6,  6,  6,  6,  7,  7,  7,  8,  8,  8,  9,  9,  9,
+             9, 10, 10, 10, 11, 11, 11, 12, 12, 12, 12, 13, 13, 13, 14, 14,
+            14, 15, 15, 15, 15, 16, 16, 16, 17, 17, 17, 18, 18, 18, 18, 19
         ];
 
         ReadOnlySpan<long> powersOf10 =
         [
-                              1,
-                             10,
-                            100,
-                           1000,
-                         1_0000,
-                        10_0000,
-                       100_0000,
-                      1000_0000,
-                    1_0000_0000,
-                   10_0000_0000,
-                  100_0000_0000,
-                 1000_0000_0000,
-               1_0000_0000_0000,
-              10_0000_0000_0000,
-             100_0000_0000_0000,
-            1000_0000_0000_0000
+                                1,
+                               10,
+                              100,
+                             1000,
+                           1_0000,
+                          10_0000,
+                         100_0000,
+                        1000_0000,
+                      1_0000_0000,
+                     10_0000_0000,
+                    100_0000_0000,
+                   1000_0000_0000,
+                 1_0000_0000_0000,
+                10_0000_0000_0000,
+               100_0000_0000_0000,
+              1000_0000_0000_0000,
+            1_0000_0000_0000_0000
         ];
 
 #pragma warning restore IDE0055
 
-        var count = (int)indexTable[unchecked((int)long.LeadingZeroCount(number))];
+        var count = (int)table[unchecked((int)long.Log2(number))];
+
+        if (number < powersOf10[count])
+        {
+            --count;
+        }
+
+        Debug.Assert((count + 1) == number.ToString(CultureInfo.InvariantCulture).Length);
 
         var (man, ju) = Math.DivRem(count, 4);
 
