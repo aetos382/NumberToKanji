@@ -72,7 +72,7 @@ public static class Converter
 
         for (var i = count; i >= 0; --i)
         {
-            (var div, number) = Math.DivRem(number, powersOf10[i]);
+            var (div, rem) = Math.DivRem(number, powersOf10[i]);
 
             if (div != 0)
             {
@@ -88,6 +88,8 @@ public static class Converter
                     addMan = true;
                 }
             }
+
+            number = rem;
 
             --ju;
 
