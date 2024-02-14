@@ -1,6 +1,4 @@
-﻿using System;
-
-using Xunit;
+﻿using Xunit;
 
 using FluentAssertions;
 
@@ -21,6 +19,7 @@ public sealed class ConverterTest
     [InlineData(1000_0000, "一千万")]
     [InlineData(1_0000_0000, "一億")]
     [InlineData(1000_0000_0000, "一千億")]
+    [InlineData(1000_0000_0008, "一千億八")]
 
     [InlineData(9, "九")]
     [InlineData(99, "九十九")]
