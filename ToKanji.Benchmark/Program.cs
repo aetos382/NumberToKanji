@@ -7,7 +7,6 @@ using ToKanjiLib;
 
 BenchmarkRunner.Run<ToKanjiBenchmark>();
 
-[ShortRunJob]
 [MemoryDiagnoser]
 public class ToKanjiBenchmark
 {
