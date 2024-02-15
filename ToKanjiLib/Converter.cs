@@ -129,59 +129,63 @@ public static class Converter
         public static bool Supported;
         public static T Ten;
         public static T MaxValue;
-        public static uint MaxPowerOf10;
+        public static uint MaxDigits;
 
         public static ReadOnlySpan<T> PowersOf10
         {
             get
             {
-                return CollectionsMarshal.AsSpan(_powersOf10);
+                return CollectionsMarshal.AsSpan(_powersOf10.Value);
             }
         }
 
-        private static List<T> _powersOf10;
-
-        public static void Initialize(
-            T ten,
-            T maxValue,
-            uint maxPowerOf10)
+        private static Lazy<List<T>> _powersOf10 = new(static () =>
         {
-            Supported = true;
-            Ten = ten;
-            MaxValue = maxValue;
-            MaxPowerOf10 = maxPowerOf10;
+            var ten = Ten;
+            var maxDigits = MaxDigits;
 
-            var p = new List<T>(unchecked((int)maxPowerOf10));
+            var p = new List<T>(unchecked((int)maxDigits));
             var v = T.One;
 
-            for (var i = 0; i < maxPowerOf10; ++i)
+            for (var i = 0; i < maxDigits; ++i)
             {
                 p.Add(v);
                 v *= ten;
             }
 
-            _powersOf10 = p;
+            return p;
+        });
+
+        public static void SetParameters(
+            T ten,
+            T maxValue,
+            uint maxDigits)
+        {
+            Supported = true;
+            Ten = ten;
+            MaxValue = maxValue;
+            MaxDigits = maxDigits;
         }
     }
 
     static Converter()
     {
-        ValueHolder<byte>.Initialize(10, byte.MaxValue, 2);
-        ValueHolder<sbyte>.Initialize(10, sbyte.MaxValue, 2);
-        ValueHolder<char>.Initialize((char)10, char.MaxValue, 4);
-        ValueHolder<short>.Initialize(10, short.MaxValue, 4);
-        ValueHolder<ushort>.Initialize(10, ushort.MaxValue, 4);
-        ValueHolder<int>.Initialize(10, int.MaxValue, 9);
-        ValueHolder<uint>.Initialize(10, uint.MaxValue, 9);
-        ValueHolder<long>.Initialize(10, long.MaxValue, 19);
-        ValueHolder<ulong>.Initialize(10, ulong.MaxValue, 19);
-        ValueHolder<nint>.Initialize(10, nint.MaxValue, Environment.Is64BitProcess ? 19U : 9U);
-        ValueHolder<nuint>.Initialize(10, nuint.MaxValue, Environment.Is64BitProcess ? 19U : 9U);
-        ValueHolder<Int128>.Initialize(10, Int128.MaxValue, 38);
-        ValueHolder<UInt128>.Initialize(10, UInt128.MaxValue, 38);
+        ValueHolder<byte>.SetParameters(10, byte.MaxValue, 2);
+        ValueHolder<sbyte>.SetParameters(10, sbyte.MaxValue, 2);
+        ValueHolder<char>.SetParameters((char)10, char.MaxValue, 4);
+        ValueHolder<short>.SetParameters(10, short.MaxValue, 4);
+        ValueHolder<ushort>.SetParameters(10, ushort.MaxValue, 4);
+        ValueHolder<int>.SetParameters(10, int.MaxValue, 9);
+        ValueHolder<uint>.SetParameters(10, uint.MaxValue, 9);
+        ValueHolder<long>.SetParameters(10, long.MaxValue, 19);
+        ValueHolder<ulong>.SetParameters(10, ulong.MaxValue, 19);
+        ValueHolder<nint>.SetParameters(10, nint.MaxValue, Environment.Is64BitProcess ? 19U : 9U);
+        ValueHolder<nuint>.SetParameters(10, nuint.MaxValue, Environment.Is64BitProcess ? 19U : 9U);
+        ValueHolder<Int128>.SetParameters(10, Int128.MaxValue, 38);
+        ValueHolder<UInt128>.SetParameters(10, UInt128.MaxValue, 38);
 
         // TODO: 暫定
-        ValueHolder<BigInteger>.Initialize(10, UInt128.MaxValue, 38);
+        ValueHolder<BigInteger>.SetParameters(10, UInt128.MaxValue, 38);
     }
 
     public static int ToKanjiX(
