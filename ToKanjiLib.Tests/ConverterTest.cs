@@ -1,4 +1,7 @@
-﻿using Xunit;
+﻿using System;
+using System.Numerics;
+
+using Xunit;
 
 using FluentAssertions;
 
@@ -43,5 +46,17 @@ public sealed class ConverterTest
         var actual = Converter.ToKanji(input);
 
         actual.Should().Be(expectedOutput);
+    }
+
+    [Fact]
+    public void BigIntegerToKanjiTest()
+    {
+        var number = new BigInteger(1);
+
+        Span<char> buffer = stackalloc char[100];
+
+        var filledChars = Converter.ToKanji(number, buffer);
+
+        buffer[..filledChars].ToString().Should().Be("一");
     }
 }
